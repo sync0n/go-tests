@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
+	"github.com/go-sql-driver/mysql"
 	"log"
 	"math/rand"
 	"net/http"
@@ -30,6 +30,7 @@ func employeeSalaries(w http.ResponseWriter, r *http.Request) {
 	// query
 	employees, err := db.Query("SELECT emp_no, first_name FROM employees LIMIT ?,20", rand.Intn(100000))
 	checkErr(err)
+	defer employees.Close()
 	for employees.Next() {
 		var empNo string
 		var firstName string
